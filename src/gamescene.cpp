@@ -16,6 +16,7 @@ GameScene::GameScene()
     nCurrentY = 0;
     nCurrentRotation = 0;
     nCurrentPiece = rand() % 7;
+
 }
 
 void GameScene::loop()
@@ -112,8 +113,11 @@ void GameScene::loop()
         if (!vLines.empty())
         {
             //this_thread::sleep_for(400ms); // Delay a bit
-            QThread::currentThread()->msleep(400);
-
+            m_timer.stop();
+            QTimer::singleShot(400, [this]()
+            {
+                m_timer.start(m_loopSpeed);
+            });
             for (auto &v : vLines)
                 for (int px = 1; px < Game::nFieldWidth - 1; px++)
                 {
@@ -145,6 +149,11 @@ void GameScene::drawField()
         {
             QGraphicsPixmapItem *pItem = new QGraphicsPixmapItem(
                         m_game.m_mainPixmap.copy(int(m_game.pField[y*Game::nFieldWidth + x])*Game::GRID_SIZE, 0, Game::GRID_SIZE, Game::GRID_SIZE));
+            if(m_game.pField[y*Game::nFieldWidth + x] == 8)
+            {
+                int i = 0;
+                i++;
+            }
             pItem->setPos(x*Game::GRID_SIZE + Game::OFFSET_X/2, y*Game::GRID_SIZE + Game::OFFSET_Y);
             addItem(pItem);
         }
