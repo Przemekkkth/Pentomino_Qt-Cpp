@@ -1,6 +1,7 @@
 #include "gamescene.h"
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
+#include <QThread>
 
 GameScene::GameScene()
     : m_loopSpeed(50)//50ms
@@ -23,7 +24,7 @@ void GameScene::loop()
     m_elapsedTimer.restart();
 
     m_loopTime += m_deltaTime;
-    if( m_loopTime > m_loopSpeed )
+    if( m_loopTime > m_loopSpeed)
     {
         m_loopTime -= m_loopSpeed;
         nSpeedCount++;
@@ -101,11 +102,29 @@ void GameScene::loop()
                 // If piece does not fit straight away, game over!
                 bGameOver = !m_game.DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
             }
+
         }
         //draw
         clear();
-        drawField();
+
         drawCurrentPiece();
+        drawField();
+        if (!vLines.empty())
+        {
+            //this_thread::sleep_for(400ms); // Delay a bit
+            QThread::currentThread()->msleep(400);
+
+            for (auto &v : vLines)
+                for (int px = 1; px < Game::nFieldWidth - 1; px++)
+                {
+                    for (int py = v; py > 0; py--)
+                        m_game.field()[py * Game::nFieldWidth + px] = m_game.field()[(py - 1) * Game::nFieldWidth + px];
+                    m_game.field()[px] = 0;
+                }
+
+            vLines.clear();
+        }
+
 
         if(isGenerateNewPiece)
         {
