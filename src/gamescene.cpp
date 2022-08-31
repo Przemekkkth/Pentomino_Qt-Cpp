@@ -18,8 +18,8 @@ GameScene::GameScene()
     nCurrentX = Game::nFieldWidth / 2;
     nCurrentY = 0;
     nCurrentRotation = 0;
-    nCurrentPiece = rand() % 7;
-
+    //nCurrentPiece = rand() % 7;
+    nCurrentPiece = 0;
 }
 
 void GameScene::loop()
@@ -58,9 +58,9 @@ void GameScene::loop()
             else
             {
                 // It can't! Lock the piece in place
-                for (int px = 0; px < 4; px++)
+                for (int px = 0; px < Game::COUNT_OF_BLOCKS; px++)
                 {
-                    for (int py = 0; py < 4; py++)
+                    for (int py = 0; py < Game::COUNT_OF_BLOCKS; py++)
                     {
                         if (m_game.tetronimo[nCurrentPiece][m_game.Rotate(px, py, nCurrentRotation)] != '.')
                         {
@@ -72,7 +72,7 @@ void GameScene::loop()
                 }
 
                 // Check for lines
-                for (int py = 0; py < 4; py++)
+                for (int py = 0; py < Game::COUNT_OF_BLOCKS; py++)
                 {
                     if(nCurrentY + py < Game::nFieldHeight - 1)
                     {
@@ -139,7 +139,8 @@ void GameScene::loop()
             nCurrentX = Game::nFieldWidth / 2;
             nCurrentY = 0;
             nCurrentRotation = 0;
-            nCurrentPiece = rand() % 7;
+            //nCurrentPiece = rand() % 7;
+            nCurrentPiece = 0;
             // If piece does not fit straight away, game over!
             bGameOver = !m_game.DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
             if(bGameOver)

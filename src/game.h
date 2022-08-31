@@ -10,13 +10,13 @@ public:
     Game();
 
     constexpr static int OFFSET_X = 100;
-    constexpr static int OFFSET_Y = 100;
+    constexpr static int OFFSET_Y = 50;
     constexpr static int nScreenWidth = 80;
     constexpr static int nScreenHeighht = 30;
-    static QString tetronimo[7];
-    constexpr static int nFieldWidth = 12;
-    constexpr static int nFieldHeight = 18;
-
+    static QString tetronimo[18];
+    constexpr static int nFieldWidth = 13;
+    constexpr static int nFieldHeight = 19;
+    constexpr static const int COUNT_OF_BLOCKS = 5;
     unsigned char *pField;
     unsigned char* field() const;
     int Rotate(int px, int py, int r);

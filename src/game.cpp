@@ -3,41 +3,19 @@
 
 QString Game::tetronimo[] =
 {
-    //I
-    QString().append("..X."
-                     "..X."
-                     "..X."
-                     "..X."),
-    //T
-    QString().append("..X."
-                     ".XX."
-                     "..X."
-                     "...."),
-    //O
-    QString().append("...."
-                     ".XX."
-                     ".XX."
-                     "...."),
-    //Z
-    QString().append("..X."
-                     ".XX."
-                     ".X.."
-                     "...."),
-    //S
-    QString().append(".X.."
-                     ".XX."
-                     "..X."
-                     "...."),
-    //L
-    QString().append(".X.."
-                     ".X.."
-                     ".XX."
-                     "...."),
-    //J
-    QString().append("..X."
-                     "..X."
-                     ".XX."
-                     "....")
+    //F
+    QString().append("....."
+                     "..XX."
+                     ".XX.."
+                     "..X.."
+                     "....."),
+    //RF
+    QString().append("....."
+                     ".XX.."
+                     "..XX."
+                     "..X.."
+                     ".....")
+
 };
 
 
@@ -75,38 +53,42 @@ int Game::Rotate(int px, int py, int r)
     {
     case 0://0
     {
-        //0  1   2  3
-        //4  5   6  7
-        //8  9  10 11
-        //12 13 14 15
-        pi = py * 4 + px;
+        //0  1   2  3  4
+        //5  6   7  8  9
+        //10 11  12 13 14
+        //15 16  17 18 19
+        //20 21  22 23 24
+        pi = py * COUNT_OF_BLOCKS + px;
     }
         break;
     case 1://90
     {
-        //12  8  4  0
-        //13  9  5  1
-        //14 10  6  2
-        //15 11  7  3
-        pi = 12 + py - (px * 4);
+        //20  15 10  5  0
+        //21  16 11  6  1
+        //22  17 12  7  2
+        //23  18 13  8  3
+        //24  19 14  9  4
+        pi = 20 + py - (px * COUNT_OF_BLOCKS);
     }
         break;
     case 2: //180
     {
-        //15  14  13  12
-        //11  10   9   8
-        // 7   6   5   4
-        // 3   2   1   0
-        pi = 15 - (py * 4) - px;
+        //24   23  22  21  20
+        //19   18  17  16  15
+        //14   13  12  11  10
+        //9     8   7   6   5
+        //4     3   2   1   0
+        pi = 24 - (py * COUNT_OF_BLOCKS) - px;
     }
         break;
     case 3://270
     {
-        // 3  7  11  15
-        // 2  6  10  14
-        // 1  5   9  13
-        // 0  4   8  12
-        pi = 3 - py + (px * 4);
+        // 4  9  14  19  24
+        // 3  8  13  18  23
+        // 2  7  12  17  22
+        // 1  6  11  16  21
+        // 0  5  10  15  20
+        pi = 4 - py + (px * COUNT_OF_BLOCKS);
     }
         break;
     }
@@ -116,8 +98,8 @@ int Game::Rotate(int px, int py, int r)
 bool Game::DoesPieceFit(int nTetronimo, int nRotation, int nPosX, int nPosY)
 {
     // All Field cells >0 are occupied
-    for (int px = 0; px < 4; px++)
-        for (int py = 0; py < 4; py++)
+    for (int px = 0; px < COUNT_OF_BLOCKS; px++)
+        for (int py = 0; py < COUNT_OF_BLOCKS; py++)
         {
             // Get index into piece
             int pi = Rotate(px, py, nRotation);
