@@ -18,7 +18,7 @@ GameScene::GameScene()
     nCurrentX = Game::nFieldWidth / 2;
     nCurrentY = 0;
     nCurrentRotation = 0;
-    //nCurrentPiece = rand() % 7;
+    nCurrentPiece = rand() % Game::COUNT_OF_PIECES;
     nCurrentPiece = 0;
 }
 
@@ -62,7 +62,7 @@ void GameScene::loop()
                 {
                     for (int py = 0; py < Game::COUNT_OF_BLOCKS; py++)
                     {
-                        if (m_game.tetronimo[nCurrentPiece][m_game.Rotate(px, py, nCurrentRotation)] != '.')
+                        if (m_game.pentomino[nCurrentPiece][m_game.Rotate(px, py, nCurrentRotation)] != '.')
                         {
                             m_game.field()[(nCurrentY + py) * Game::nFieldWidth + (nCurrentX + px)] = nCurrentPiece+1;
                         }
@@ -88,7 +88,7 @@ void GameScene::loop()
                             // Remove Line, set to =
                             for (int px = 1; px < Game::nFieldWidth - 1; px++)
                             {
-                                m_game.field()[(nCurrentY + py) * Game::nFieldWidth + px] = 8;
+                                m_game.field()[(nCurrentY + py) * Game::nFieldWidth + px] = Game::ANIM_BLOCK;
                             }
 
                             vLines.push_back(nCurrentY + py);
@@ -138,9 +138,7 @@ void GameScene::loop()
             // Pick New Piece
             nCurrentX = Game::nFieldWidth / 2;
             nCurrentY = 0;
-            nCurrentRotation = 0;
-            //nCurrentPiece = rand() % 7;
-            nCurrentPiece = 0;
+            nCurrentPiece = rand() % Game::COUNT_OF_PIECES;
             // If piece does not fit straight away, game over!
             bGameOver = !m_game.DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
             if(bGameOver)
@@ -159,11 +157,6 @@ void GameScene::drawField()
         {
             QGraphicsPixmapItem *pItem = new QGraphicsPixmapItem(
                         m_game.m_mainPixmap.copy(int(m_game.pField[y*Game::nFieldWidth + x])*Game::GRID_SIZE, 0, Game::GRID_SIZE, Game::GRID_SIZE));
-            if(m_game.pField[y*Game::nFieldWidth + x] == 8)
-            {
-                int i = 0;
-                i++;
-            }
             pItem->setPos(x*Game::GRID_SIZE + Game::OFFSET_X/2, y*Game::GRID_SIZE + Game::OFFSET_Y);
             addItem(pItem);
         }
@@ -172,11 +165,11 @@ void GameScene::drawField()
 
 void GameScene::drawCurrentPiece()
 {
-    for (int px = 0; px < 4; px++)
+    for (int px = 0; px < Game::COUNT_OF_BLOCKS; px++)
     {
-        for (int py = 0; py < 4; py++)
+        for (int py = 0; py < Game::COUNT_OF_BLOCKS; py++)
         {
-            if (m_game.tetronimo[nCurrentPiece][m_game.Rotate(px, py, nCurrentRotation)] != '.')
+            if (m_game.pentomino[nCurrentPiece][m_game.Rotate(px, py, nCurrentRotation)] != '.')
             {
                 QGraphicsPixmapItem *pItem = new QGraphicsPixmapItem(m_game.getPixmap().copy( (nCurrentPiece+1)*Game::GRID_SIZE, 0, Game::GRID_SIZE, Game::GRID_SIZE));
                 pItem->setPos((nCurrentX + px)*Game::GRID_SIZE + Game::OFFSET_X/2 , (nCurrentY + py)*Game::GRID_SIZE + Game::OFFSET_Y);

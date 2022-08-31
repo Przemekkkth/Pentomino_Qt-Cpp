@@ -1,7 +1,7 @@
 #include "game.h"
 #include <QDebug>
 
-QString Game::tetronimo[] =
+QString Game::pentomino[] =
 {
     //F
     QString().append("....."
@@ -14,8 +14,91 @@ QString Game::tetronimo[] =
                      ".XX.."
                      "..XX."
                      "..X.."
+                     "....."),
+    //I
+    QString().append("..X.."
+                     "..X.."
+                     "..X.."
+                     "..X.."
+                     "..X.."),
+    //J
+    QString().append("..X.."
+                     "..X.."
+                     "..X.."
+                     ".XX.."
+                     "....."),
+    //N
+    QString().append("....."
+                     ".XX.."
+                     "..XXX"
+                     "....."
+                     "....."),
+    //RN
+    QString().append("....."
+                     "..XX."
+                     "XXX.."
+                     "....."
+                     "....."),
+    //P
+    QString().append("....."
+                     "..XX."
+                     "..XX."
+                     "..X.."
+                     "....."),
+    //RP
+    QString().append("....."
+                     ".XX.."
+                     ".XX.."
+                     "..X.."
+                     "....."),
+    //T
+    QString().append("....."
+                     ".XXX."
+                     "..X.."
+                     "..X.."
+                     "....."),
+    //V
+    QString().append("..X.."
+                     "..X.."
+                     "..XXX"
+                     "....."
+                     "....."),
+    //W
+    QString().append("....."
+                     ".X..."
+                     ".XX.."
+                     "..XX."
+                     "....."),
+    //X
+    QString().append("....."
+                     "..X.."
+                     ".XXX."
+                     "..X.."
+                     "....."),
+    //Y
+    QString().append("....."
+                     "..X.."
+                     "XXXX."
+                     "....."
+                     "....."),
+    //RY
+    QString().append("....."
+                     "....."
+                     "XXXX."
+                     "..X.."
+                     "....."),
+    //Z
+    QString().append("....."
+                     ".XX.."
+                     "..X.."
+                     "..XX."
+                     "....."),
+    //RZ
+    QString().append("....."
+                     "..XX."
+                     "..X.."
+                     ".XX.."
                      ".....")
-
 };
 
 
@@ -26,7 +109,7 @@ Game::Game()
     {
         for (int y = 0; y < nFieldHeight; y++)
         {
-            pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? 9 : 0;
+            pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? Game::BOUNDARY_BLOCK : 0;
         }
     }
 
@@ -116,7 +199,7 @@ bool Game::DoesPieceFit(int nTetronimo, int nRotation, int nPosX, int nPosY)
                 if (nPosY + py >= 0 && nPosY + py < nFieldHeight)
                 {
                     // In Bounds so do collision check
-                    if (Game::tetronimo[nTetronimo][pi] != '.' && pField[fi] != 0)
+                    if (Game::pentomino[nTetronimo][pi] != '.' && pField[fi] != 0)
                         return false; // fail on first hit
                 }
             }
