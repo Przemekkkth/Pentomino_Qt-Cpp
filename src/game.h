@@ -26,7 +26,7 @@ public:
     QPixmap getPixmap() const;
     constexpr static const int GRID_SIZE = 32;
 
-    constexpr static QSize RESOLUTION = QSize(GRID_SIZE*nFieldWidth+OFFSET_X, GRID_SIZE*(nFieldHeight+5)+OFFSET_Y);
+    constexpr static QSize RESOLUTION = QSize(GRID_SIZE*nFieldWidth+3*OFFSET_X, GRID_SIZE*(nFieldHeight+5)+OFFSET_Y);
 
     constexpr static const int ANIM_BLOCK = 17;
     constexpr static const int BOUNDARY_BLOCK = 18;

@@ -19,7 +19,7 @@ GameScene::GameScene()
     nCurrentY = 0;
     nCurrentRotation = 0;
     nCurrentPiece = rand() % Game::COUNT_OF_PIECES;
-    nCurrentPiece = 0;
+    nNextPiece = rand() % Game::COUNT_OF_PIECES;
 }
 
 void GameScene::loop()
@@ -111,11 +111,11 @@ void GameScene::loop()
         clear();
 
         drawCurrentPiece();
+        drawNextPiece();
         drawField();
         drawScore();
         if (!vLines.empty())
         {
-            //this_thread::sleep_for(400ms); // Delay a bit
             m_timer.stop();
             QTimer::singleShot(400, [this]()
             {
@@ -135,11 +135,12 @@ void GameScene::loop()
 
         if(isGenerateNewPiece)
         {
-            // Pick New Piece
+
             nCurrentX = Game::nFieldWidth / 2;
             nCurrentY = 0;
-            nCurrentPiece = rand() % Game::COUNT_OF_PIECES;
-            // If piece does not fit straight away, game over!
+            nCurrentPiece = nNextPiece;
+            nNextPiece = rand() % Game::COUNT_OF_PIECES;
+
             bGameOver = !m_game.DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
             if(bGameOver)
             {
@@ -180,6 +181,29 @@ void GameScene::drawCurrentPiece()
         }
     }
 
+}
+
+void GameScene::drawNextPiece()
+{
+    QGraphicsSimpleTextItem* tItem = new QGraphicsSimpleTextItem();
+    tItem->setText("Next: ");
+    tItem->setBrush(QBrush(Qt::white));
+    tItem->setFont(QFont("Arial", 20, 50, true));
+    tItem->setPos(Game::RESOLUTION.width() - (Game::COUNT_OF_BLOCKS-1)*Game::GRID_SIZE, Game::OFFSET_Y+75);
+    addItem(tItem);
+    for (int px = 0; px < Game::COUNT_OF_BLOCKS; px++)
+    {
+        for (int py = 0; py < Game::COUNT_OF_BLOCKS; py++)
+        {
+            if (m_game.pentomino[nNextPiece][m_game.Rotate(px, py, 0)] != '.')
+            {
+                QGraphicsPixmapItem *pItem = new QGraphicsPixmapItem(m_game.getPixmap().copy( (nCurrentPiece+1)*Game::GRID_SIZE, 0, Game::GRID_SIZE, Game::GRID_SIZE));
+                pItem->setPos(px*Game::GRID_SIZE + Game::RESOLUTION.width() - (Game::COUNT_OF_BLOCKS+1)*Game::GRID_SIZE, (py)*Game::GRID_SIZE + Game::OFFSET_Y+100);
+                addItem(pItem);
+            }
+
+        }
+    }
 }
 
 void GameScene::drawScore()
@@ -245,7 +269,9 @@ void GameScene::restartGame()
     nCurrentY = 0;
     nCurrentRotation = 0;
     nCurrentPiece = rand() % Game::COUNT_OF_PIECES;
-    nCurrentPiece = 0;
+    nNextPiece = rand() % Game::COUNT_OF_PIECES;
+
+    nScore = 0;
     m_game.initBoard();
 }
 

@@ -19,6 +19,7 @@ private slots:
 private:
     void drawField();
     void drawCurrentPiece();
+    void drawNextPiece();
     void drawScore();
     void drawGameOverText();
     void handePlayerInput();
@@ -36,6 +37,7 @@ private:
     //2 =>go down
     //3 => rotate
     int nCurrentPiece = 0;
+    int nNextPiece = 0;
     int nCurrentRotation = 0;
     int nCurrentX = Game::nFieldWidth / 2;
     int nCurrentY = 0;
