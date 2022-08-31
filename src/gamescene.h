@@ -19,6 +19,8 @@ private slots:
 private:
     void drawField();
     void drawCurrentPiece();
+    void drawScore();
+    void drawGameOverText();
     void handePlayerInput();
 
     QTimer m_timer;
@@ -48,6 +50,7 @@ private:
     // QGraphicsScene interface
 protected:
     virtual void keyPressEvent(QKeyEvent *event) override;
+    virtual void keyReleaseEvent(QKeyEvent *event) override;
 };
 
 #endif // GAMESCENE_H

@@ -2,9 +2,12 @@
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
 #include <QThread>
+#include <QGraphicsSimpleTextItem>
 
 GameScene::GameScene()
-    : m_loopSpeed(50)//50ms
+    : m_loopSpeed(50),//50ms
+      bKey{false, false, false, false},
+      bGameOver(false)
 {
     connect(&m_timer, &QTimer::timeout, this, &GameScene::loop);
     m_timer.start(m_loopSpeed);
@@ -25,7 +28,7 @@ void GameScene::loop()
     m_elapsedTimer.restart();
 
     m_loopTime += m_deltaTime;
-    if( m_loopTime > m_loopSpeed)
+    if( m_loopTime > m_loopSpeed && !bGameOver)
     {
         m_loopTime -= m_loopSpeed;
         nSpeedCount++;
@@ -100,8 +103,7 @@ void GameScene::loop()
                 isGenerateNewPiece = true;
 
 
-                // If piece does not fit straight away, game over!
-                bGameOver = !m_game.DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
+
             }
 
         }
@@ -110,6 +112,7 @@ void GameScene::loop()
 
         drawCurrentPiece();
         drawField();
+        drawScore();
         if (!vLines.empty())
         {
             //this_thread::sleep_for(400ms); // Delay a bit
@@ -137,6 +140,12 @@ void GameScene::loop()
             nCurrentY = 0;
             nCurrentRotation = 0;
             nCurrentPiece = rand() % 7;
+            // If piece does not fit straight away, game over!
+            bGameOver = !m_game.DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
+            if(bGameOver)
+            {
+                drawGameOverText();
+            }
         }
     }
 }
@@ -179,6 +188,26 @@ void GameScene::drawCurrentPiece()
 
 }
 
+void GameScene::drawScore()
+{
+    QGraphicsSimpleTextItem* tItem = new QGraphicsSimpleTextItem();
+    tItem->setText("Score: " + QString::number(nScore).left(4));
+    tItem->setBrush(QBrush(Qt::white));
+    tItem->setPos(Game::RESOLUTION.width()-tItem->boundingRect().width(), 0);
+    addItem(tItem);
+}
+
+void GameScene::drawGameOverText()
+{
+    QGraphicsSimpleTextItem* tItem = new QGraphicsSimpleTextItem();
+    tItem->setText("Game Over");
+    tItem->setBrush(QBrush(Qt::white));
+    tItem->setFont(QFont("Arial", 20, 50, true));
+    tItem->setPos(Game::RESOLUTION.width()/2-tItem->boundingRect().width()/2, 10);
+    addItem(tItem);
+
+}
+
 void GameScene::handePlayerInput()
 {
     if(bKey[0])
@@ -187,7 +216,7 @@ void GameScene::handePlayerInput()
         {
             nCurrentX--;
         }
-        bKey[0] = false;
+        //bKey[0] = false;
     }
     else if(bKey[1])
     {
@@ -195,7 +224,7 @@ void GameScene::handePlayerInput()
         {
             nCurrentX++;
         }
-        bKey[1] = false;
+        //bKey[1] = false;
     }
     else if(bKey[2])
     {
@@ -203,7 +232,7 @@ void GameScene::handePlayerInput()
         {
             nCurrentY++;
         }
-        bKey[2] = false;
+        //bKey[2] = false;
     }
     else if(bKey[3])
     {
@@ -239,6 +268,36 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Z:
         {
             bKey[3] = true;
+        }
+            break;
+        }
+    }
+}
+
+void GameScene::keyReleaseEvent(QKeyEvent *event)
+{
+    if(!event->isAutoRepeat())
+    {
+        switch (event->key())
+        {
+        case Qt::Key_Left:
+        {
+            bKey[0] = false;
+        }
+            break;
+        case Qt::Key_Right:
+        {
+            bKey[1] = false;
+        }
+            break;
+        case Qt::Key_Down:
+        {
+            bKey[2] = false;
+        }
+            break;
+        case Qt::Key_Z:
+        {
+            bKey[3] = false;
         }
             break;
         }
