@@ -30,6 +30,7 @@ public:
 
     constexpr static const int ANIM_BLOCK = 17;
     constexpr static const int BOUNDARY_BLOCK = 18;
+    void initBoard();
 };
 
 #endif // GAME_H

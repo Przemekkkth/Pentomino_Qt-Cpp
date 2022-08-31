@@ -238,6 +238,17 @@ void GameScene::handePlayerInput()
     }
 }
 
+void GameScene::restartGame()
+{
+    bGameOver = false;
+    nCurrentX = Game::nFieldWidth / 2;
+    nCurrentY = 0;
+    nCurrentRotation = 0;
+    nCurrentPiece = rand() % Game::COUNT_OF_PIECES;
+    nCurrentPiece = 0;
+    m_game.initBoard();
+}
+
 void GameScene::keyPressEvent(QKeyEvent *event)
 {
     if(!event->isAutoRepeat())
@@ -262,6 +273,14 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Z:
         {
             bKey[3] = true;
+        }
+            break;
+        case Qt::Key_R:
+        {
+            if(bGameOver)
+            {
+                restartGame();
+            }
         }
             break;
         }

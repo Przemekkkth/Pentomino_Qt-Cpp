@@ -102,9 +102,8 @@ QString Game::pentomino[] =
 };
 
 
-Game::Game()
+void Game::initBoard()
 {
-    pField = new unsigned char[nFieldWidth*nFieldHeight];
     for (int x = 0; x < nFieldWidth; x++) // Board Boundary
     {
         for (int y = 0; y < nFieldHeight; y++)
@@ -112,6 +111,12 @@ Game::Game()
             pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? Game::BOUNDARY_BLOCK : 0;
         }
     }
+}
+
+Game::Game()
+{
+    pField = new unsigned char[nFieldWidth*nFieldHeight];
+    initBoard();
 
     if(m_mainPixmap.load(":/res/blocks.png"))
     {

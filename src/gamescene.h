@@ -23,6 +23,7 @@ private:
     void drawGameOverText();
     void handePlayerInput();
 
+    void restartGame();
     QTimer m_timer;
     QElapsedTimer m_elapsedTimer;
     const float m_loopSpeed;
