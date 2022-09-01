@@ -15,6 +15,7 @@ GameScene::GameScene()
     setSceneRect(0,0,Game::RESOLUTION.width(), Game::RESOLUTION.height());
     setBackgroundBrush(QBrush(Qt::black));
 
+    srand(time(0));
     nCurrentX = Game::nFieldWidth / 2;
     nCurrentY = 0;
     nCurrentRotation = 0;
@@ -197,7 +198,7 @@ void GameScene::drawNextPiece()
         {
             if (m_game.pentomino[nNextPiece][m_game.Rotate(px, py, 0)] != '.')
             {
-                QGraphicsPixmapItem *pItem = new QGraphicsPixmapItem(m_game.getPixmap().copy( (nCurrentPiece+1)*Game::GRID_SIZE, 0, Game::GRID_SIZE, Game::GRID_SIZE));
+                QGraphicsPixmapItem *pItem = new QGraphicsPixmapItem(m_game.getPixmap().copy( (nNextPiece+1)*Game::GRID_SIZE, 0, Game::GRID_SIZE, Game::GRID_SIZE));
                 pItem->setPos(px*Game::GRID_SIZE + Game::RESOLUTION.width() - (Game::COUNT_OF_BLOCKS+1)*Game::GRID_SIZE, (py)*Game::GRID_SIZE + Game::OFFSET_Y+100);
                 addItem(pItem);
             }
