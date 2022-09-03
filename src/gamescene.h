@@ -25,6 +25,7 @@ private:
     void handePlayerInput();
 
     void restartGame();
+    void saveScene();
     QTimer m_timer;
     QElapsedTimer m_elapsedTimer;
     const float m_loopSpeed;

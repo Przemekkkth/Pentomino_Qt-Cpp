@@ -3,6 +3,8 @@
 #include <QGraphicsPixmapItem>
 #include <QThread>
 #include <QGraphicsSimpleTextItem>
+#include <QDir>
+#include <QPainter>
 
 GameScene::GameScene()
     : m_loopSpeed(50),//50ms
@@ -276,6 +278,19 @@ void GameScene::restartGame()
     m_game.initBoard();
 }
 
+void GameScene::saveScene()
+{
+    static int index = 0;
+    QString fileName = QDir::currentPath() + QDir::separator() + "screen" + QString::number(index++) + ".png";
+    QRect rect = sceneRect().toAlignedRect();
+    QImage image(rect.size(), QImage::Format_ARGB32);
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+    render(&painter);
+    image.save(fileName);
+    qDebug() << "saved " << fileName;
+}
+
 void GameScene::keyPressEvent(QKeyEvent *event)
 {
     if(!event->isAutoRepeat())
@@ -310,6 +325,10 @@ void GameScene::keyPressEvent(QKeyEvent *event)
             }
         }
             break;
+        case Qt::Key_P:
+        {
+            saveScene();
+        }
         }
     }
 }
