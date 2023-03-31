@@ -16,4 +16,4 @@ qmake && make
 ## Addons
 * [Qt](https://www.qt.io/) - Cross-Platform software for embedded & desktop
 * [yt](https://youtu.be/fVtmckgR38g) - gameplay
-* [Play online](https://przemekkkth.github.io/pentomino/index.html) - game host on GitHub
+* [Play online](https://przemekkkth.github.io/assets/games/pentomino/index.html) - game host on GitHub
